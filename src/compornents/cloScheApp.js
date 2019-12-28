@@ -1,4 +1,5 @@
 import React from 'react'; 
+import ScheduleList from './scheduleList';
 
 // cf: https://ja.reactjs.org/docs/state-and-lifecycle.html
 class Clock extends React.Component {
@@ -25,8 +26,13 @@ class Clock extends React.Component {
   }
   render() {
     return (
-      <div>
-        <h2>{this.state.date.toLocaleTimeString()}</h2>
+      <div className="closche">
+        <div className="clock">
+          <h2>{this.state.date.toLocaleTimeString()}</h2>
+        </div>
+        <div className="schedule">
+          <ScheduleList now={this.state.date}/>
+        </div>
       </div>
     );
   }
