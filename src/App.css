@@ -5,19 +5,20 @@
   }
   .clock {
     position: absolute;
-    bottom: 55vh;
+    bottom: 52vh;
     left: 0;
     width: 50vw;
     font-size: 4em !important;
   }
   .doingAndNext {
     position: absolute;
-    top: 45vh;
+    top: 48vh;
     left: 0;
-    height: 55vh;
+    height: 52vh;
     overflow: hidden;
     width: 50vw;
     vertical-align: top;
+    margin-bottom: 0 ! important;
   }
   .approaching {
     position: absolute;
@@ -38,6 +39,10 @@ ul {
 .App {
   text-align: center;
   font-size: 5vw;
+}
+
+.doingAndNext{
+  margin-bottom: 2em;
 }
 
 code {
