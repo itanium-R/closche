@@ -17,6 +17,11 @@ class ScheduleList extends React.Component {
   parseTimeStr(time) {
     return this.zeroPad(time.h, 2) + ":" + this.zeroPad(time.m, 2);
   }
+  parseFullTimeStr(time) {
+    return this.zeroPad(time.h, 2) + ":" + 
+           this.zeroPad(time.m, 2) + ":" + 
+           this.zeroPad(time.s, 2);
+  }
 
   calcMinDiff(t1,t2){
     return (((t1.h - t2.h) * 60) + (t1.m - t2.m));
