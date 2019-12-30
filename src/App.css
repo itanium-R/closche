@@ -1,31 +1,30 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP|Nova+Mono&display=swap');
 @media screen and (min-width: 120vh) {
-  .App{
+  .App {
     font-size: 2.6vw !important;
   }
-
   .clock {
     position: absolute;
-    bottom:50vh;
-    left:0;
-    width:50vw;
+    bottom: 55vh;
+    left: 0;
+    width: 50vw;
     font-size: 4em !important;
   }
-
-  .doingAndNext{
+  .doingAndNext {
     position: absolute;
-    top:50vh;
-    left:0;
-    width:50vw;
+    top: 45vh;
+    left: 0;
+    height: 55vh;
+    overflow: hidden;
+    width: 50vw;
     vertical-align: top;
   }
-  
-  .approaching{
+  .approaching {
     position: absolute;
     top: 50vh;
     transform: translateY(-50%);
-    right:0;
-    width:50vw;
+    right: 0;
+    width: 50vw;
     max-height: 100vh;
     overflow: hidden;
   }
@@ -75,10 +74,18 @@ code {
   text-align: center !important;
 }
 
+.bigTitle {
+  width: 8em;
+  font-size: 1.5em;
+  margin: 0.5em 0 0 0;
+  font-family: 'Noto Sans JP', sans-serif;
+  text-align: center !important;
+  display: inline-block;
+}
+
 .suffix {
   width: 6em;
-  margin: 0 -1.1em;
-  transform: scaleX(0.6);
+  margin: 0 0.5em 0 5em;
   font-family: 'Noto Sans JP', sans-serif;
 }
 
@@ -86,4 +93,9 @@ code {
   width: 0.2em;
   margin: 0 0.3em;
   transform: scale(2, 1.5);
+}
+
+.underlined {
+  border: solid #000;
+  border-width: 0 0 10px 0;
 }

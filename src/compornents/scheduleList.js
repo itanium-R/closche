@@ -72,7 +72,8 @@ class ScheduleList extends React.Component {
           <ul className="nopoint">
             {doing.map(a => (
               <li key={this.parseTimeStr(a.st)}>
-                <span className="sched title">{a.text}</span>
+                <span className="sched prefix">進行中：</span>
+                <span className="sched bigTitle">{a.text}</span><br />
                 <span className="sched suffix">終了まであと</span>
                 <span className="sched tHMS">{this.calcTimeDiff(a.en, now)}</span>
               </li>
@@ -81,14 +82,15 @@ class ScheduleList extends React.Component {
           <ul className="nopoint">
             {next.map(a => (
               <li key={this.parseTimeStr(a.st)}>
-                <span className="sched title">{a.text}</span>
+              <span className="sched prefix">次は　：</span>
+                <span className="sched bigTitle">{a.text}</span><br />
                 <span className="sched suffix">開始まであと</span>
                 <span className="sched tHMS">{this.calcTimeDiff(a.st, now)}</span>
               </li>
             ))}
           </ul>
         </div>
-        <div className="approaching">
+        <div className="approaching leftlined">
           <ul className="nopoint">
             {approaching.map(a => (
               <li key={this.parseTimeStr(a.st)}>
