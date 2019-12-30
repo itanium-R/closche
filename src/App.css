@@ -1,17 +1,48 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP|Nova+Mono&display=swap');
+@media screen and (min-width: 120vh) {
+  .App{
+    font-size: 2.6vw !important;
+  }
 
-ul{
-  list-style-type: none
+  .clock {
+    position: absolute;
+    bottom:50vh;
+    left:0;
+    width:50vw;
+    font-size: 4em !important;
+  }
+
+  .doingAndNext{
+    position: absolute;
+    top:50vh;
+    left:0;
+    width:50vw;
+    vertical-align: top;
+  }
+  
+  .approaching{
+    position: absolute;
+    top: 50vh;
+    transform: translateY(-50%);
+    right:0;
+    width:50vw;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+}
+
+ul {
+  list-style-type: none;
+  margin: 0 auto;
 }
 
 .App {
   text-align: center;
+  font-size: 5vw;
 }
 
-
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .sched {
@@ -26,6 +57,7 @@ code {
   font-weight: 100;
   font-family: 'Nova Mono', monospace;
 }
+
 .tHM {
   width: 2.8em;
   font-family: 'Nova Mono', monospace;
@@ -37,7 +69,21 @@ code {
 }
 
 .title {
-  width: 5em;
+  width: 8em;
   padding: 0 0.5em;
   font-family: 'Noto Sans JP', sans-serif;
+  text-align: center !important;
+}
+
+.suffix {
+  width: 6em;
+  margin: 0 -1.1em;
+  transform: scaleX(0.6);
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.dMark {
+  width: 0.2em;
+  margin: 0 0.3em;
+  transform: scale(2, 1.5);
 }
