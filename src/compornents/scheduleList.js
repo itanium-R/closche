@@ -3,7 +3,7 @@ import React from 'react';
 class ScheduleList extends React.Component {
   constructor(props) {
     super(props);
-    let schedules = [{text:"hoge",time:{h:11,m:0}},{text:"fuga",time:{h:23,m:50}}];
+    let schedules = [{text:"hoge",st:{h:11,m:0},en:{h:12,m:0}},{text:"fuga",st:{h:23,m:0},en:{h:23,m:50}}];
     this.state = {schedules: schedules, apprNum: 3};
     // let startDate = props.now.getDate(); 
   }
@@ -15,7 +15,7 @@ class ScheduleList extends React.Component {
   };
 
   parseTimeStr(time) {
-    return this.zeroPad(time.h) + ":" + this.zeroPad(time.m);
+    return this.zeroPad(time.h, 2) + ":" + this.zeroPad(time.m, 2);
   }
 
   calcMinDiff(t1,t2){
@@ -28,9 +28,12 @@ class ScheduleList extends React.Component {
     let remSec = (((t1.h - t2.h) * 60 * 60) + 
                   ((t1.m - t2.m) * 60) + 
                    (t1.s - t2.s));
-    return (this.zeroPad(parseInt(remSec / (60 * 60)),2) + ":" +
-            this.zeroPad(parseInt(remSec / 60),2) + ":" +
-            this.zeroPad(remSec % 60,2));
+    let h = parseInt(remSec / (60 * 60));
+    let m = parseInt(remSec / (60) - h * 60);
+    let s = parseInt(remSec % 60);
+    return (this.zeroPad(h, 2) + ":" +
+            this.zeroPad(m, 2) + ":" +
+            this.zeroPad(s, 2));
   }
 
   render() {
@@ -42,7 +45,7 @@ class ScheduleList extends React.Component {
     let approaching = [];
     let cnt = 0;
     for(let s of this.state.schedules){
-      if(this.calcMinDiff(s.time,now) > 0){
+      if(this.calcMinDiff(s.st,now) > 0){
         approaching.push(s);
         cnt += 1;
       }
@@ -51,8 +54,13 @@ class ScheduleList extends React.Component {
     return (
       <ul className="nopoint">
         {approaching.map(a => (
-          <li key={this.parseTimeStr(a.time)}>{this.parseTimeStr(a.time)} : {a.text} : 
-            あと{this.calcTimeDiff(a.time,now)}</li>
+          <li key={this.parseTimeStr(a.st)}>
+            <span className="sched tHM">{this.parseTimeStr(a.st)}</span>
+            <span className="sched">～</span>
+            <span className="sched tHM">{this.parseTimeStr(a.en)}</span>
+            <span className="sched title">{a.text}</span>
+            <span className="sched tHMS">{this.calcTimeDiff(a.st,now)}</span>
+          </li>
           
         ))}
       </ul>
