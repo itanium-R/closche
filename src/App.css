@@ -42,7 +42,7 @@ ul {
   font-size: 5vw;
 }
 
-.doingAndNext{
+.doingAndNext {
   margin-bottom: 2em;
 }
 
@@ -73,10 +73,10 @@ code {
   font-family: 'Nova Mono', monospace;
 }
 
-.tSY{
+.tSY {
   width: 1em;
   margin: 0 -0.1em;
-  transform: scale3d(0.7,0.9,1);
+  transform: scale3d(0.7, 0.9, 1);
 }
 
 .title {

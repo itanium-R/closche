@@ -3,8 +3,18 @@ import React from 'react';
 class ScheduleList extends React.Component {
   constructor(props) {
     super(props);
-    let schedules = [{ text: "hogehoge", st: { h: 17, m: 20 }, en: { h: 17, m: 50 } }, { text: "fugafuga", st: { h: 18, m: 20 }, en: { h: 18, m: 50 } }, { text: "hogefuga", st: { h: 23, m: 0 }, en: { h: 23, m: 50 } }];
-    this.state = { schedules: schedules, apprNum: 3 };
+
+    let schedules = [
+      { st: { h: 9, m: 0 }, en: { h: 10, m: 30 }, title: "１限" },
+      { st: { h: 10, m: 40 }, en: { h: 12, m: 10 }, title: "２限" },
+      { st: { h: 13, m: 0 }, en: { h: 14, m: 30 }, title: "３限" },
+      { st: { h: 14, m: 40 }, en: { h: 16, m: 10 }, title: "４限" },
+      { st: { h: 16, m: 20 }, en: { h: 17, m: 50 }, title: "５限" },
+      { st: { h: 18, m: 0 }, en: { h: 19, m: 30 }, title: "６限" },
+    ];
+
+    let parseFlg = (str) => { return (str === "true" || str === true) ? true : false };
+    this.state = { schedules: schedules, apprNum: 3, showsAll: parseFlg(props.showsAll) };
     // let startDate = props.now.getDate(); 
   }
 
@@ -62,6 +72,8 @@ class ScheduleList extends React.Component {
           s.isDoing = true;
           approaching.push(s);
           doing.push(s);
+        } else if (this.state.showsAll) {
+          approaching.push(s);
         }
       }
       if (cnt >= this.state.apprNum) break;
@@ -73,7 +85,7 @@ class ScheduleList extends React.Component {
             {doing.map(a => (
               <li key={this.parseTimeStr(a.st)}>
                 <span className="sched prefix">進行中：</span>
-                <span className="sched bigTitle">{a.text}</span><br />
+                <span className="sched bigTitle">{a.title}</span><br />
                 <span className="sched suffix">終了まであと</span>
                 <span className="sched tHMS">{this.calcTimeDiff(a.en, now)}</span>
               </li>
@@ -82,8 +94,8 @@ class ScheduleList extends React.Component {
           <ul className="nopoint">
             {next.map(a => (
               <li key={this.parseTimeStr(a.st)}>
-              <span className="sched prefix">次は　：</span>
-                <span className="sched bigTitle">{a.text}</span><br />
+                <span className="sched prefix">次は　：</span>
+                <span className="sched bigTitle">{a.title}</span><br />
                 <span className="sched suffix">開始まであと</span>
                 <span className="sched tHMS">{this.calcTimeDiff(a.st, now)}</span>
               </li>
@@ -98,7 +110,7 @@ class ScheduleList extends React.Component {
                 <span className="sched tHM">{this.parseTimeStr(a.st)}</span>
                 <span className="sched tSY">～</span>
                 <span className="sched tHM">{this.parseTimeStr(a.en)}</span>
-                <span className="sched title">{a.text}</span>
+                <span className="sched title">{a.title}</span>
               </li>
             ))}
           </ul>
