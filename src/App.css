@@ -54,7 +54,9 @@ code {
   display: inline-block;
   overflow: hidden;
   height: 1.5em;
+  line-height: 1.5em;
   text-align: left;
+  vertical-align: bottom;
 }
 
 .clock {
@@ -104,7 +106,7 @@ code {
 .dMark {
   width: 0.2em;
   margin: 0 0.3em;
-  transform: scale(2, 1.5);
+  transform: scale3d(2, 2, 1) translateY(-4%);
 }
 
 .underlined {
