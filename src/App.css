@@ -27,6 +27,7 @@
     right: 0;
     width: 50vw;
     max-height: 100vh;
+    font-size: 1.1em;
     overflow: hidden;
   }
 }
@@ -70,6 +71,12 @@ code {
 .tHMS {
   width: 5em;
   font-family: 'Nova Mono', monospace;
+}
+
+.tSY{
+  width: 1em;
+  margin: 0 -0.1em;
+  transform: scale3d(0.7,0.9,1);
 }
 
 .title {

@@ -90,13 +90,13 @@ class ScheduleList extends React.Component {
             ))}
           </ul>
         </div>
-        <div className="approaching leftlined">
+        <div className="approaching">
           <ul className="nopoint">
             {approaching.map(a => (
               <li key={this.parseTimeStr(a.st)}>
                 {a.isDoing ? <span className="sched dMark">■</span> : <span className="sched dMark">　</span>}
                 <span className="sched tHM">{this.parseTimeStr(a.st)}</span>
-                <span className="sched">～</span>
+                <span className="sched tSY">～</span>
                 <span className="sched tHM">{this.parseTimeStr(a.en)}</span>
                 <span className="sched title">{a.text}</span>
               </li>
