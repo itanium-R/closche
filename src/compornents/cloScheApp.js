@@ -1,11 +1,11 @@
-import React from 'react'; 
+import React from 'react';
 import ScheduleList from './scheduleList';
 
 // cf: https://ja.reactjs.org/docs/state-and-lifecycle.html
 class Clock extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {date: new Date()};
+    this.state = { date: new Date() };
   }
 
   componentDidMount() {
@@ -31,7 +31,7 @@ class Clock extends React.Component {
           <span className="underlined">{this.state.date.toLocaleTimeString()}</span>
         </div>
         <div className="schedule">
-          <ScheduleList now={this.state.date}  showsAll="false"/>
+          <ScheduleList now={this.state.date} showsAll="true" />
         </div>
       </div>
     );

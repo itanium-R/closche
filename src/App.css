@@ -30,6 +30,9 @@
     font-size: 1.1em;
     overflow: hidden;
   }
+  .setIco {
+    width: 3vw !important;
+  }
 }
 
 ul {
@@ -112,4 +115,18 @@ code {
 .underlined {
   border: solid #000;
   border-width: 0 0 10px 0;
+}
+
+.setIco {
+  display: block;
+  position: absolute;
+  top: 2vh;
+  right: 2vh;
+  width: 6vw;
+  opacity: 0.01;
+  transition: all .3s;
+}
+
+.setIco:hover {
+  opacity: 0.5;
 }

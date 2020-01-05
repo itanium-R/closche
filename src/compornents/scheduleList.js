@@ -1,4 +1,5 @@
 import React from 'react';
+import Modal from './settingModal';
 
 class ScheduleList extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class ScheduleList extends React.Component {
     let parseFlg = (str) => { return (str === "true" || str === true) ? true : false };
     this.state = { schedules: schedules, apprNum: 3, showsAll: parseFlg(props.showsAll) };
     // let startDate = props.now.getDate(); 
+    this.setShowsAll = this.setShowsAll.bind(this);
   }
 
   zeroPad(num, len) {
@@ -50,6 +52,12 @@ class ScheduleList extends React.Component {
     return (this.zeroPad(h, 2) + ":" +
       this.zeroPad(m, 2) + ":" +
       this.zeroPad(s, 2));
+  }
+
+  setShowsAll(flg) {
+    //console.log(JSON.stringify(this));
+    //this.setState({showsAll:true});
+    this.setState({ showsAll: flg });
   }
 
   render() {
@@ -116,6 +124,7 @@ class ScheduleList extends React.Component {
           </ul>
           {approaching.length === 0 ? <p>以後の予定はありません</p> : <span></span>}
         </div>
+        <Modal schedules={this.state.schedules} showsAll={this.state.showsAll} showsAllHandler={this.setShowsAll} />
       </div>
     );
   }
