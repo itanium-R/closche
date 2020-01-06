@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "closche",
+  "name": "clock and schedule indicator",
   "icons": [
     {
       "src": "favicon.ico",
