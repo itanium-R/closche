@@ -70,6 +70,7 @@ class ScheduleList extends React.Component {
     let approaching = [];
     let cnt = 0;
     for (let s of this.state.schedules) {
+      if (!this.state.showsAll && cnt >= this.state.apprNum) break;
       if (this.calcMinDiff(s.st, now) > 0) {
         s.isDoing = false;
         if (cnt === 0) next.push(s);
@@ -80,11 +81,13 @@ class ScheduleList extends React.Component {
           s.isDoing = true;
           approaching.push(s);
           doing.push(s);
+          cnt += 1;
         } else if (this.state.showsAll) {
+          s.isDoing = false;
           approaching.push(s);
+          cnt += 1;
         }
       }
-      if (cnt >= this.state.apprNum) break;
     }
     return (
       <div>
