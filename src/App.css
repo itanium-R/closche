@@ -113,7 +113,7 @@ code {
 }
 
 .underlined {
-  border: solid #000;
+  border: solid;
   border-width: 0 0 10px 0;
 }
 

@@ -24,7 +24,9 @@ class SettingModal extends React.Component {
       showsAll: parseFlg(props.showsAll),
       showsAllHandler: props.showsAllHandler,
       apprNum: props.apprNum,
-      apprNumHandler: props.apprNumHandler
+      apprNumHandler: props.apprNumHandler,
+      color: props.color,
+      colorHandler: props.colorHandler
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -41,17 +43,29 @@ class SettingModal extends React.Component {
     this.setState({ modalIsOpen: false });
   }
   handleInputChange(event) {
+    const checked = event.target.checked;
+    let value = event.target.value;
+    let color = this.state.color;
     switch (event.target.name) {
       case ("showsAll"):
-        const checked = event.target.checked;
         this.setState({ showsAll: checked });
         this.state.showsAllHandler(checked);
         break;
       case ("apprNum"):
-        const value = parseInt(event.target.value);
+        value = parseInt(value);
         if (value < 2) break; // 2未満にはしない
         this.setState({ apprNum: value });
         this.state.apprNumHandler(value);
+        break;
+      case ("fontColor"):
+        color.font = value;
+        this.setState({ color: color });
+        this.state.colorHandler(color);
+        break;
+      case ("backColor"):
+        color.back = value;
+        this.setState({ color: color });
+        this.state.colorHandler(color);
         break;
       default:
         break;
@@ -86,6 +100,18 @@ class SettingModal extends React.Component {
                 </label>
               </div>
             }
+
+            <label className="setLabel"> 文字色
+                <input name="fontColor" type="text"
+                value={this.state.color.font}
+                onChange={this.handleInputChange} />
+            </label>
+            <label className="setLabel"> 背景色
+                <input name="backColor" type="text"
+                value={this.state.color.back}
+                onChange={this.handleInputChange} />
+            </label>
+
 
             <p><button onClick={this.closeModal}>close</button></p>
           </form>

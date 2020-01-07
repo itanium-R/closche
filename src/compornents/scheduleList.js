@@ -13,16 +13,30 @@ class ScheduleList extends React.Component {
       { st: { h: 18, m: 0 }, en: { h: 19, m: 30 }, id: 6, title: "６限" },
     ];
 
+    let color = {
+      font: "#000",
+      back: "#eee"
+    }
+
     let parseFlg = (str) => { return (str === "true" || str === true) ? true : false };
     this.state = {
       schedules: schedules,
       apprNum: parseInt(localStorage.getItem("closche_apprNum") || 5),
       showsAll: parseFlg(localStorage.getItem("closche_showsAll") || props.showsAll),
+      color: JSON.parse(localStorage.getItem("closche_color")) || color,
       nextId: 7
     };
     // let startDate = props.now.getDate(); 
     this.setShowsAll = this.setShowsAll.bind(this);
     this.setApprNum = this.setApprNum.bind(this);
+    this.setColor = this.setColor.bind(this);
+
+    this.activateColor();
+  }
+
+  activateColor() {
+    document.querySelector("body").style.color = this.state.color.font;
+    document.querySelector("body").style.backgroundColor = this.state.color.back;
   }
 
   zeroPad(num, len) {
@@ -67,6 +81,14 @@ class ScheduleList extends React.Component {
   setApprNum(num) {
     this.setState({ apprNum: num });
     localStorage.setItem("closche_apprNum", num);
+  }
+
+  setColor(color) {
+    if (color.font && color.back) {
+      this.setState({ color: color });
+      localStorage.setItem("closche_color", JSON.stringify(color));
+      this.activateColor();
+    }
   }
 
   render() {
@@ -134,13 +156,15 @@ class ScheduleList extends React.Component {
               </li>
             ))}
           </ul>
-          {approaching.length === 0 ? <p>以後の予定はありません</p> : <span></span>}
+          {approaching.length === 0 ? <p>以後の予定はありません</p> : <span />}
         </div>
         <Modal schedules={this.state.schedules}
           showsAll={this.state.showsAll}
           showsAllHandler={this.setShowsAll}
           apprNum={this.state.apprNum}
-          apprNumHandler={this.setApprNum} />
+          apprNumHandler={this.setApprNum}
+          color={this.state.color}
+          colorHandler={this.setColor} />
       </div>
     );
   }
