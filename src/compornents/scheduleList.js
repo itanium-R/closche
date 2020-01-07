@@ -6,18 +6,24 @@ class ScheduleList extends React.Component {
     super(props);
 
     let schedules = [
-      { st: { h: 9, m: 0 }, en: { h: 10, m: 30 }, title: "１限" },
-      { st: { h: 10, m: 40 }, en: { h: 12, m: 10 }, title: "２限" },
-      { st: { h: 13, m: 0 }, en: { h: 14, m: 30 }, title: "３限" },
-      { st: { h: 14, m: 40 }, en: { h: 16, m: 10 }, title: "４限" },
-      { st: { h: 16, m: 20 }, en: { h: 17, m: 50 }, title: "５限" },
-      { st: { h: 18, m: 0 }, en: { h: 19, m: 30 }, title: "６限" },
+      { st: { h: 9, m: 0 }, en: { h: 10, m: 30 }, id: 1, title: "１限" },
+      { st: { h: 10, m: 40 }, en: { h: 12, m: 10 }, id: 2, title: "２限" },
+      { st: { h: 13, m: 0 }, en: { h: 14, m: 30 }, id: 3, title: "３限" },
+      { st: { h: 14, m: 40 }, en: { h: 16, m: 10 }, id: 4, title: "４限" },
+      { st: { h: 16, m: 20 }, en: { h: 17, m: 50 }, id: 5, title: "５限" },
+      { st: { h: 18, m: 0 }, en: { h: 19, m: 30 }, id: 6, title: "６限" },
     ];
 
     let parseFlg = (str) => { return (str === "true" || str === true) ? true : false };
-    this.state = { schedules: schedules, apprNum: 3, showsAll: parseFlg(props.showsAll) };
+    this.state = {
+      schedules: schedules,
+      apprNum: 3,
+      showsAll: parseFlg(props.showsAll),
+      nextId: 7
+    };
     // let startDate = props.now.getDate(); 
     this.setShowsAll = this.setShowsAll.bind(this);
+    this.setApprNum = this.setApprNum.bind(this);
   }
 
   zeroPad(num, len) {
@@ -55,9 +61,11 @@ class ScheduleList extends React.Component {
   }
 
   setShowsAll(flg) {
-    //console.log(JSON.stringify(this));
-    //this.setState({showsAll:true});
     this.setState({ showsAll: flg });
+  }
+
+  setApprNum(num) {
+    this.setState({ apprNum: num });
   }
 
   render() {
@@ -73,7 +81,7 @@ class ScheduleList extends React.Component {
       if (!this.state.showsAll && cnt >= this.state.apprNum) break;
       if (this.calcMinDiff(s.st, now) > 0) {
         s.isDoing = false;
-        if (cnt === 0) next.push(s);
+        if (next.length === 0) next.push(s);
         approaching.push(s);
         cnt += 1;
       } else {
@@ -104,7 +112,7 @@ class ScheduleList extends React.Component {
           </ul>
           <ul className="nopoint">
             {next.map(a => (
-              <li key={this.parseTimeStr(a.st)}>
+              <li key={a.id}>
                 <span className="sched prefix">次は　：</span>
                 <span className="sched bigTitle">{a.title}</span><br />
                 <span className="sched suffix">開始まであと</span>
@@ -127,7 +135,11 @@ class ScheduleList extends React.Component {
           </ul>
           {approaching.length === 0 ? <p>以後の予定はありません</p> : <span></span>}
         </div>
-        <Modal schedules={this.state.schedules} showsAll={this.state.showsAll} showsAllHandler={this.setShowsAll} />
+        <Modal schedules={this.state.schedules}
+          showsAll={this.state.showsAll}
+          showsAllHandler={this.setShowsAll}
+          apprNum={this.state.apprNum}
+          apprNumHandler={this.setApprNum} />
       </div>
     );
   }

@@ -22,7 +22,9 @@ class SettingModal extends React.Component {
       modalIsOpen: false,
       schedules: props.schedules,
       showsAll: parseFlg(props.showsAll),
-      showsAllHandler: props.showsAllHandler
+      showsAllHandler: props.showsAllHandler,
+      apprNum: props.apprNum,
+      apprNumHandler: props.apprNumHandler
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -45,6 +47,12 @@ class SettingModal extends React.Component {
         this.setState({ showsAll: checked });
         this.state.showsAllHandler(checked);
         break;
+      case ("apprNum"):
+        const value = parseInt(event.target.value);
+        if (value < 2) break; // 2未満にはしない
+        this.setState({ apprNum: value });
+        this.state.apprNumHandler(value);
+        break;
       default:
         break;
     }
@@ -62,11 +70,22 @@ class SettingModal extends React.Component {
         >
           <form>
             <h2>Setting</h2>
-            <label> 全予定表示
+            <div>
+              <label> 全予定表示
             <input name="showsAll" type="checkbox"
-                checked={this.state.showsAll}
-                onChange={this.handleInputChange} />
-            </label>
+                  checked={this.state.showsAll}
+                  onChange={this.handleInputChange} />
+              </label>
+            </div>
+            {!this.state.showsAll &&
+              <div>
+                <label> 表示数(2~*)
+            <input name="apprNum" type="number"
+                    value={this.state.apprNum}
+                    onChange={this.handleInputChange} />
+                </label>
+              </div>
+            }
 
             <p><button onClick={this.closeModal}>close</button></p>
           </form>
