@@ -4,7 +4,6 @@ import Modal from './settingModal';
 class ScheduleList extends React.Component {
   constructor(props) {
     super(props);
-
     let schedules = [
       { st: { h: 9, m: 0 }, en: { h: 10, m: 30 }, id: 1, title: "１限" },
       { st: { h: 10, m: 40 }, en: { h: 12, m: 10 }, id: 2, title: "２限" },
@@ -17,8 +16,8 @@ class ScheduleList extends React.Component {
     let parseFlg = (str) => { return (str === "true" || str === true) ? true : false };
     this.state = {
       schedules: schedules,
-      apprNum: 3,
-      showsAll: parseFlg(props.showsAll),
+      apprNum: parseInt(localStorage.getItem("closche_apprNum") || 5),
+      showsAll: parseFlg(localStorage.getItem("closche_showsAll") || props.showsAll),
       nextId: 7
     };
     // let startDate = props.now.getDate(); 
@@ -62,10 +61,12 @@ class ScheduleList extends React.Component {
 
   setShowsAll(flg) {
     this.setState({ showsAll: flg });
+    localStorage.setItem("closche_showsAll", flg);
   }
 
   setApprNum(num) {
     this.setState({ apprNum: num });
+    localStorage.setItem("closche_apprNum", num);
   }
 
   render() {
