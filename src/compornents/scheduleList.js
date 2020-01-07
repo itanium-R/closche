@@ -4,14 +4,17 @@ import Modal from './settingModal';
 class ScheduleList extends React.Component {
   constructor(props) {
     super(props);
-    let schedules = [
-      { st: { h: 9, m: 0 }, en: { h: 10, m: 30 }, id: 1, title: "１限" },
-      { st: { h: 10, m: 40 }, en: { h: 12, m: 10 }, id: 2, title: "２限" },
-      { st: { h: 13, m: 0 }, en: { h: 14, m: 30 }, id: 3, title: "３限" },
-      { st: { h: 14, m: 40 }, en: { h: 16, m: 10 }, id: 4, title: "４限" },
-      { st: { h: 16, m: 20 }, en: { h: 17, m: 50 }, id: 5, title: "５限" },
-      { st: { h: 18, m: 0 }, en: { h: 19, m: 30 }, id: 6, title: "６限" },
-    ];
+    let schedules = {
+      list: [
+        { id: 0, st: { h: 9, m: 0 }, en: { h: 10, m: 30 }, title: "１限" },
+        { id: 1, st: { h: 10, m: 40 }, en: { h: 12, m: 10 }, title: "２限" },
+        { id: 2, st: { h: 13, m: 0 }, en: { h: 14, m: 30 }, title: "３限" },
+        { id: 3, st: { h: 14, m: 40 }, en: { h: 16, m: 10 }, title: "４限" },
+        { id: 4, st: { h: 16, m: 20 }, en: { h: 17, m: 50 }, title: "５限" },
+        { id: 5, st: { h: 18, m: 0 }, en: { h: 19, m: 30 }, title: "６限" },
+      ],
+      nextId: 6
+    };
 
     let color = {
       font: "#000",
@@ -20,13 +23,14 @@ class ScheduleList extends React.Component {
 
     let parseFlg = (str) => { return (str === "true" || str === true) ? true : false };
     this.state = {
-      schedules: schedules,
+      schedules: JSON.parse(localStorage.getItem("closche_schedules")) || schedules,
       apprNum: parseInt(localStorage.getItem("closche_apprNum") || 5),
       showsAll: parseFlg(localStorage.getItem("closche_showsAll") || props.showsAll),
       color: JSON.parse(localStorage.getItem("closche_color")) || color,
       nextId: 7
     };
     // let startDate = props.now.getDate(); 
+    this.setSchedules = this.setSchedules.bind(this);
     this.setShowsAll = this.setShowsAll.bind(this);
     this.setApprNum = this.setApprNum.bind(this);
     this.setColor = this.setColor.bind(this);
@@ -91,6 +95,12 @@ class ScheduleList extends React.Component {
     }
   }
 
+  setSchedules(schedules) {
+    this.setState({ schedules: schedules });
+    localStorage.setItem("closche_schedules", JSON.stringify(schedules));
+  }
+
+
   render() {
     let now = {
       h: this.props.now.getHours(),
@@ -100,7 +110,7 @@ class ScheduleList extends React.Component {
     let doing = [], next = [];
     let approaching = [];
     let cnt = 0;
-    for (let s of this.state.schedules) {
+    for (let s of this.state.schedules.list) {
       if (!this.state.showsAll && cnt >= this.state.apprNum) break;
       if (this.calcMinDiff(s.st, now) > 0) {
         s.isDoing = false;
@@ -159,6 +169,8 @@ class ScheduleList extends React.Component {
           {approaching.length === 0 ? <p>以後の予定はありません</p> : <span />}
         </div>
         <Modal schedules={this.state.schedules}
+          schedulesHandler={this.setSchedules}
+          nextId={this.state.nextId}
           showsAll={this.state.showsAll}
           showsAllHandler={this.setShowsAll}
           apprNum={this.state.apprNum}

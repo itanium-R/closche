@@ -21,18 +21,25 @@ class SettingModal extends React.Component {
     this.state = {
       modalIsOpen: false,
       schedules: props.schedules,
+      schedulesHandler: props.schedulesHandler,
+      nextId: props.nextId,
       showsAll: parseFlg(props.showsAll),
       showsAllHandler: props.showsAllHandler,
       apprNum: props.apprNum,
       apprNumHandler: props.apprNumHandler,
       color: props.color,
-      colorHandler: props.colorHandler
+      colorHandler: props.colorHandler,
+      newScheSt: "00:00",
+      newScheEn: "00:00",
+      newScheT: ""
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
 
     this.handleInputChange = this.handleInputChange.bind(this);
+
+    this.addSchedule = this.addSchedule.bind(this);
   }
   openModal() {
     this.setState({ modalIsOpen: true });
@@ -46,7 +53,8 @@ class SettingModal extends React.Component {
     const checked = event.target.checked;
     let value = event.target.value;
     let color = this.state.color;
-    switch (event.target.name) {
+    let name = event.target.name;
+    switch (name) {
       case ("showsAll"):
         this.setState({ showsAll: checked });
         this.state.showsAllHandler(checked);
@@ -67,10 +75,45 @@ class SettingModal extends React.Component {
         this.setState({ color: color });
         this.state.colorHandler(color);
         break;
+      case ("schedules"):
+        try {
+          let schedules = JSON.parse(value);
+          this.setState({ schedules: schedules });
+          this.state.schedulesHandler(schedules);
+        } catch (e) {
+          console.log(e);
+        }
+        break;
       default:
+        this.setState({ [name]: value });
         break;
     }
   }
+
+  addSchedule() {
+    let newScheSt = this.state.newScheSt;
+    let newScheEn = this.state.newScheEn;
+    let st = { h: newScheSt.slice(0, 2), m: newScheSt.slice(-2) };
+    let en = { h: newScheEn.slice(0, 2), m: newScheEn.slice(-2) };
+    let newSche = {
+      id: this.state.nextId,
+      st: st,
+      en: en,
+      title: this.state.newScheT
+    }
+    let schedules = this.state.schedules;
+    schedules.list.push(newSche);
+    schedules.nextId += 1;
+    // TODO: SORT
+    this.state.schedulesHandler(schedules);
+    // TODO: newScheEStを最後のEn時間に
+    this.setState({ newScheSt: "00:00", newScheEn: "00:00", newScheT: "" });
+  }
+
+  submitHandle(event) {
+    event.preventDefault();
+  }
+
   render() {
     return (
       <div>
@@ -112,9 +155,34 @@ class SettingModal extends React.Component {
                 onChange={this.handleInputChange} />
             </label>
 
-
-            <p><button onClick={this.closeModal}>close</button></p>
+            {false && <label className="setLabel"> 予定JSON
+                <input name="schedules" type="text"
+                value={JSON.stringify(this.state.schedules)}
+                onChange={this.handleInputChange} />
+            </label>}
           </form>
+
+          <hr />
+          <form onSubmit={this.submitHandle}>
+            <h2>予定追加</h2>
+            <label className="setLabel"> 開始時刻
+                <input name="newScheSt" type="time"
+                value={this.state.newScheSt}
+                onChange={this.handleInputChange} />
+            </label>
+            <label className="setLabel"> 終了時刻
+                <input name="newScheEn" type="time"
+                value={this.state.newScheEn}
+                onChange={this.handleInputChange} />
+            </label>
+            <label className="setLabel"> タイトル
+                <input name="newScheT" type="text"
+                value={this.state.newScheT}
+                onChange={this.handleInputChange} />
+            </label>
+            <p><button onClick={this.addSchedule}>登録</button></p>
+          </form>
+          <p><button onClick={this.closeModal}>close</button></p>
         </Modal>
       </div>
     );
