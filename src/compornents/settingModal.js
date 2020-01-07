@@ -71,16 +71,16 @@ class SettingModal extends React.Component {
           <form>
             <h2>Setting</h2>
             <div>
-              <label> 全予定表示
-            <input name="showsAll" type="checkbox"
+              <label className="setLabel"> 全予定表示
+                <input name="showsAll" type="checkbox"
                   checked={this.state.showsAll}
                   onChange={this.handleInputChange} />
               </label>
             </div>
             {!this.state.showsAll &&
               <div>
-                <label> 表示数(2~*)
-            <input name="apprNum" type="number"
+                <label className="setLabel"> 表示数(2~*)
+                  <input name="apprNum" type="number"
                     value={this.state.apprNum}
                     onChange={this.handleInputChange} />
                 </label>

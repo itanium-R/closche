@@ -130,3 +130,16 @@ code {
 .setIco:hover {
   opacity: 0.5;
 }
+
+.setLabel {
+  display: block;
+  width: 10em;
+}
+
+input[type="number"] {
+  width: 2em;
+}
+
+.scheLi{
+  margin: 0.5em 0;
+}

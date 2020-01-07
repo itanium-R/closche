@@ -124,7 +124,7 @@ class ScheduleList extends React.Component {
         <div className="approaching">
           <ul className="nopoint">
             {approaching.map(a => (
-              <li key={this.parseTimeStr(a.st)}>
+              <li key={this.parseTimeStr(a.st)} className="scheLi">
                 {a.isDoing ? <span className="sched dMark">■</span> : <span className="sched dMark">　</span>}
                 <span className="sched tHM">{this.parseTimeStr(a.st)}</span>
                 <span className="sched tSY">～</span>
