@@ -64,6 +64,17 @@ class SettingModal extends React.Component {
     });
   }
 
+  initNewSche() {
+    let len = this.state.schedules.list.length;
+    if (len <= 0) return -1;
+    let sli = this.state.schedules.list[len - 1];
+    this.setState({
+      newScheSt: this.parseTimeStr(sli.en),
+      newScheEn: this.parseTimeStr(sli.en),
+      newScheT: ""
+    });
+  }
+
   parseTimeStr(time) {
     return this.zeroPad(time.h, 2) + ":" + this.zeroPad(time.m, 2);
   }
@@ -71,6 +82,7 @@ class SettingModal extends React.Component {
   openModal() {
     this.setState({ modalIsOpen: true });
     this.initEditedSche();
+    this.initNewSche();
   }
 
   afterOpenModal() {
@@ -142,8 +154,7 @@ class SettingModal extends React.Component {
     schedules.list.push(newSche);
     schedules.nextId += 1;
     this.state.schedulesHandler(schedules);
-    // TODO: newScheEStを最後のEn時間に
-    this.setState({ newScheSt: "00:00", newScheEn: "00:00", newScheT: "" });
+    this.initNewSche();
     // TODO: バリデーション st<enか
   }
 
@@ -155,6 +166,7 @@ class SettingModal extends React.Component {
     let nextEditId = (schedules.list.length > 0) ? schedules.list[0].id : 0;
     this.setState({ editId: nextEditId });
     this.initEditedSche(nextEditId);
+    this.initNewSche();
   }
 
   editSchedule(id, st, en, title) {
@@ -175,6 +187,7 @@ class SettingModal extends React.Component {
       title: title
     }
     this.state.schedulesHandler(schedules);
+    this.initNewSche();
   }
 
   parseTimeObj(HMStr) {
