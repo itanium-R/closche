@@ -46,9 +46,6 @@ class SettingModal extends React.Component {
     this.addSchedule = this.addSchedule.bind(this);
     this.rmSchedule = this.rmSchedule.bind(this);
     this.editSchedule = this.editSchedule.bind(this);
-    this.initEditedSche = this.initEditedSche.bind(this);
-
-    //this.initEditedSche();
   }
 
   zeroPad(num, len) {
