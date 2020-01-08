@@ -18,7 +18,7 @@ class SettingModal extends React.Component {
   constructor(props) {
     super(props);
     let parseFlg = (str) => { return (str === "true" || str === true) ? true : false };
-    let rmId = (props.schedules.list.length > 0) ? props.schedules.list[0].id : 0;
+    let editId = (props.schedules.list.length > 0) ? props.schedules.list[0].id : 0;
     this.state = {
       modalIsOpen: false,
       schedules: props.schedules,
@@ -32,7 +32,10 @@ class SettingModal extends React.Component {
       newScheSt: "00:00",
       newScheEn: "00:00",
       newScheT: "",
-      rmId: rmId
+      editedScheSt: "00:00",
+      editedScheEn: "00:00",
+      editedScheT: "",
+      editId: editId
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -42,15 +45,44 @@ class SettingModal extends React.Component {
 
     this.addSchedule = this.addSchedule.bind(this);
     this.rmSchedule = this.rmSchedule.bind(this);
+    this.editSchedule = this.editSchedule.bind(this);
+    this.initEditedSche = this.initEditedSche.bind(this);
+
+    //this.initEditedSche();
   }
+
+  zeroPad(num, len) {
+    let rslt = "";
+    for (let i = 0; i < len; i += 1) rslt += "0";
+    return (rslt + num).slice(-len);
+  };
+
+  initEditedSche(id = this.state.editId) {
+    if (this.state.schedules.list.length <= 0) return -1;
+    let sli = this.state.schedules.list.find(sli => sli.id === id);
+    this.setState({
+      editedScheSt: this.parseTimeStr(sli.st),
+      editedScheEn: this.parseTimeStr(sli.en),
+      editedScheT: sli.title
+    });
+  }
+
+  parseTimeStr(time) {
+    return this.zeroPad(time.h, 2) + ":" + this.zeroPad(time.m, 2);
+  }
+
   openModal() {
     this.setState({ modalIsOpen: true });
+    this.initEditedSche();
   }
+
   afterOpenModal() {
   }
+
   closeModal() {
     this.setState({ modalIsOpen: false });
   }
+
   handleInputChange(event) {
     const checked = event.target.checked;
     let value = event.target.value;
@@ -78,7 +110,21 @@ class SettingModal extends React.Component {
         this.state.colorHandler(color);
         break;
       case ("rmOpt"):
-        this.setState({ rmId: parseInt(value) });
+        value = parseInt(value);
+        this.setState({ editId: value });
+        this.initEditedSche(value);
+        break;
+      case ("editedScheSt"):
+        this.setState({ [name]: value });
+        this.editSchedule(null, value, null, null);
+        break;
+      case ("editedScheEn"):
+        this.setState({ [name]: value });
+        this.editSchedule(null, null, value, null);
+        break;
+      case ("editedScheT"):
+        this.setState({ [name]: value });
+        this.editSchedule(null, null, null, value);
         break;
       default:
         this.setState({ [name]: value });
@@ -87,11 +133,9 @@ class SettingModal extends React.Component {
   }
 
   addSchedule() {
-    let newScheSt = this.state.newScheSt;
-    let newScheEn = this.state.newScheEn;
     let schedules = this.state.schedules;
-    let st = { h: newScheSt.slice(0, 2), m: newScheSt.slice(-2) };
-    let en = { h: newScheEn.slice(0, 2), m: newScheEn.slice(-2) };
+    let st = this.parseTimeObj(this.state.newScheSt);
+    let en = this.parseTimeObj(this.state.newScheEn);
     let newSche = {
       id: schedules.nextId,
       st: st,
@@ -108,13 +152,39 @@ class SettingModal extends React.Component {
   }
 
   rmSchedule() {
-    let id = this.state.rmId;
-    console.log(id);
+    let id = this.state.editId;
     let schedules = this.state.schedules;
-    schedules.list = schedules.list.filter((sli) => { console.log(sli.id, id, sli.id !== id); return sli.id !== id });
+    schedules.list = schedules.list.filter((sli) => { return sli.id !== id });
     this.state.schedulesHandler(schedules);
-    let nextRmId = (schedules.list.length > 0) ? schedules.list[0].id : 0;
-    this.setState({ schedules: schedules, rmId: nextRmId });
+    let nextEditId = (schedules.list.length > 0) ? schedules.list[0].id : 0;
+    this.setState({ editId: nextEditId });
+    this.initEditedSche(nextEditId);
+  }
+
+  editSchedule(id, st, en, title) {
+    id = id || this.state.editId;
+    let schedules = this.state.schedules;
+    if (schedules.list.length <= 0) return -1;
+    let index;
+    for (index = schedules.list.length - 1; index >= 0; index--) {
+      if (schedules.list[index].id === id) break;
+    }
+    st = this.parseTimeObj(st || this.state.editedScheSt);
+    en = this.parseTimeObj(en || this.state.editedScheEn);
+    title = title || schedules.list[index].title;
+    schedules.list[index] = {
+      id: id,
+      st: st,
+      en: en,
+      title: title
+    }
+    // TODO: SORT
+    this.state.schedulesHandler(schedules);
+    //this.setState({ schedules: schedules });
+  }
+
+  parseTimeObj(HMStr) {
+    return { h: parseInt(HMStr.slice(0, 2)), m: parseInt(HMStr.slice(-2)) };
   }
 
   submitHandle(event) {
@@ -161,19 +231,13 @@ class SettingModal extends React.Component {
                 value={this.state.color.back}
                 onChange={this.handleInputChange} />
             </label>
-
-            {false && <label className="setLabel"> 予定JSON
-                <input name="schedules" type="text"
-                value={JSON.stringify(this.state.schedules)}
-                onChange={this.handleInputChange} />
-            </label>}
           </form>
 
           <hr />
           <form onSubmit={this.submitHandle}>
-            <h2>予定削除</h2>
-            <label className="setLabel"> タイトル
-              <select value={this.state.rmId} name="rmOpt"
+            <h2>予定編集・削除</h2>
+            <label className="setLabel"> 予定選択
+              <select value={this.state.editId} name="rmOpt"
                 onChange={this.handleInputChange} >
                 {this.state.schedules.list.map(a => (
                   <option
@@ -182,6 +246,22 @@ class SettingModal extends React.Component {
                     value={a.id} key={a.id} />
                 ))}
               </select>
+            </label>
+
+            <label className="setLabel"> 開始時刻
+                <input name="editedScheSt" type="time"
+                value={this.state.editedScheSt}
+                onChange={this.handleInputChange} />
+            </label>
+            <label className="setLabel"> 終了時刻
+                <input name="editedScheEn" type="time"
+                value={this.state.editedScheEn}
+                onChange={this.handleInputChange} />
+            </label>
+            <label className="setLabel"> タイトル
+                <input name="editedScheT" type="text"
+                value={this.state.editedScheT}
+                onChange={this.handleInputChange} />
             </label>
             <p><button onClick={this.rmSchedule}>削除</button></p>
           </form>
@@ -213,15 +293,3 @@ class SettingModal extends React.Component {
   }
 }
 export default SettingModal;
-
-/*
-{this.state.schedules.map(a => (
-  <div>
-    <input type="text" value={a.title} onChange={this.handleInputChange} />
-    <input type="text" value={a.st.h} />
-    <input type="text" value={a.st.m} />
-    <input type="text" value={a.en.h} />
-    <input type="text" value={a.en.m} />
-  </div>
-))}
-*/
