@@ -95,6 +95,7 @@ class ScheduleList extends React.Component {
   }
 
   setSchedules(schedules) {
+    schedules.list.sort((a, b) => (a.st.h * 60 + a.st.m) - (b.st.h * 60 + b.st.m));
     this.setState({ schedules: schedules });
     localStorage.setItem("closche_schedules", JSON.stringify(schedules));
   }

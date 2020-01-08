@@ -141,7 +141,6 @@ class SettingModal extends React.Component {
     }
     schedules.list.push(newSche);
     schedules.nextId += 1;
-    // TODO: SORT
     this.state.schedulesHandler(schedules);
     // TODO: newScheEStを最後のEn時間に
     this.setState({ newScheSt: "00:00", newScheEn: "00:00", newScheT: "" });
@@ -175,9 +174,7 @@ class SettingModal extends React.Component {
       en: en,
       title: title
     }
-    // TODO: SORT
     this.state.schedulesHandler(schedules);
-    //this.setState({ schedules: schedules });
   }
 
   parseTimeObj(HMStr) {
