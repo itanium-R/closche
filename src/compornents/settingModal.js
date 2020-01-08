@@ -18,11 +18,11 @@ class SettingModal extends React.Component {
   constructor(props) {
     super(props);
     let parseFlg = (str) => { return (str === "true" || str === true) ? true : false };
+    let rmId = (props.schedules.list.length > 0) ? props.schedules.list[0].id : 0;
     this.state = {
       modalIsOpen: false,
       schedules: props.schedules,
       schedulesHandler: props.schedulesHandler,
-      nextId: props.nextId,
       showsAll: parseFlg(props.showsAll),
       showsAllHandler: props.showsAllHandler,
       apprNum: props.apprNum,
@@ -31,7 +31,8 @@ class SettingModal extends React.Component {
       colorHandler: props.colorHandler,
       newScheSt: "00:00",
       newScheEn: "00:00",
-      newScheT: ""
+      newScheT: "",
+      rmId: rmId
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -40,6 +41,7 @@ class SettingModal extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
 
     this.addSchedule = this.addSchedule.bind(this);
+    this.rmSchedule = this.rmSchedule.bind(this);
   }
   openModal() {
     this.setState({ modalIsOpen: true });
@@ -75,14 +77,8 @@ class SettingModal extends React.Component {
         this.setState({ color: color });
         this.state.colorHandler(color);
         break;
-      case ("schedules"):
-        try {
-          let schedules = JSON.parse(value);
-          this.setState({ schedules: schedules });
-          this.state.schedulesHandler(schedules);
-        } catch (e) {
-          console.log(e);
-        }
+      case ("rmOpt"):
+        this.setState({ rmId: parseInt(value) });
         break;
       default:
         this.setState({ [name]: value });
@@ -93,21 +89,32 @@ class SettingModal extends React.Component {
   addSchedule() {
     let newScheSt = this.state.newScheSt;
     let newScheEn = this.state.newScheEn;
+    let schedules = this.state.schedules;
     let st = { h: newScheSt.slice(0, 2), m: newScheSt.slice(-2) };
     let en = { h: newScheEn.slice(0, 2), m: newScheEn.slice(-2) };
     let newSche = {
-      id: this.state.nextId,
+      id: schedules.nextId,
       st: st,
       en: en,
       title: this.state.newScheT
     }
-    let schedules = this.state.schedules;
     schedules.list.push(newSche);
     schedules.nextId += 1;
     // TODO: SORT
     this.state.schedulesHandler(schedules);
     // TODO: newScheEStを最後のEn時間に
     this.setState({ newScheSt: "00:00", newScheEn: "00:00", newScheT: "" });
+    // TODO: バリデーション st<enか
+  }
+
+  rmSchedule() {
+    let id = this.state.rmId;
+    console.log(id);
+    let schedules = this.state.schedules;
+    schedules.list = schedules.list.filter((sli) => { console.log(sli.id, id, sli.id !== id); return sli.id !== id });
+    this.state.schedulesHandler(schedules);
+    let nextRmId = (schedules.list.length > 0) ? schedules.list[0].id : 0;
+    this.setState({ schedules: schedules, rmId: nextRmId });
   }
 
   submitHandle(event) {
@@ -160,6 +167,23 @@ class SettingModal extends React.Component {
                 value={JSON.stringify(this.state.schedules)}
                 onChange={this.handleInputChange} />
             </label>}
+          </form>
+
+          <hr />
+          <form onSubmit={this.submitHandle}>
+            <h2>予定削除</h2>
+            <label className="setLabel"> タイトル
+              <select value={this.state.rmId} name="rmOpt"
+                onChange={this.handleInputChange} >
+                {this.state.schedules.list.map(a => (
+                  <option
+                    label={a.title + "(" + ("00" + a.st.h).slice(-2) +
+                      ":" + ("00" + a.st.m).slice(-2) + "~)"}
+                    value={a.id} key={a.id} />
+                ))}
+              </select>
+            </label>
+            <p><button onClick={this.rmSchedule}>削除</button></p>
           </form>
 
           <hr />

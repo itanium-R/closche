@@ -27,7 +27,6 @@ class ScheduleList extends React.Component {
       apprNum: parseInt(localStorage.getItem("closche_apprNum") || 5),
       showsAll: parseFlg(localStorage.getItem("closche_showsAll") || props.showsAll),
       color: JSON.parse(localStorage.getItem("closche_color")) || color,
-      nextId: 7
     };
     // let startDate = props.now.getDate(); 
     this.setSchedules = this.setSchedules.bind(this);
@@ -135,7 +134,7 @@ class ScheduleList extends React.Component {
         <div className="doingAndNext">
           <ul className="nopoint">
             {doing.map(a => (
-              <li key={this.parseTimeStr(a.st)}>
+              <li key={a.id}>
                 <span className="sched prefix">進行中：</span>
                 <span className="sched bigTitle">{a.title}</span><br />
                 <span className="sched suffix">終了まであと</span>
@@ -157,7 +156,7 @@ class ScheduleList extends React.Component {
         <div className="approaching">
           <ul className="nopoint">
             {approaching.map(a => (
-              <li key={this.parseTimeStr(a.st)} className="scheLi">
+              <li key={a.id} className="scheLi">
                 {a.isDoing ? <span className="sched dMark">■</span> : <span className="sched dMark">　</span>}
                 <span className="sched tHM">{this.parseTimeStr(a.st)}</span>
                 <span className="sched tSY">～</span>
@@ -170,7 +169,6 @@ class ScheduleList extends React.Component {
         </div>
         <Modal schedules={this.state.schedules}
           schedulesHandler={this.setSchedules}
-          nextId={this.state.nextId}
           showsAll={this.state.showsAll}
           showsAllHandler={this.setShowsAll}
           apprNum={this.state.apprNum}
