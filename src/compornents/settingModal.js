@@ -145,6 +145,10 @@ class SettingModal extends React.Component {
     let schedules = this.state.schedules;
     let st = this.parseTimeObj(this.state.newScheSt);
     let en = this.parseTimeObj(this.state.newScheEn);
+    if ((st.h * 60 + st.m) > (en.h * 60 + en.m)) {
+      alert("終了時刻を開始時刻より前に設定してください");
+      return -1;
+    }
     let newSche = {
       id: schedules.nextId,
       st: st,
@@ -155,7 +159,6 @@ class SettingModal extends React.Component {
     schedules.nextId += 1;
     this.state.schedulesHandler(schedules);
     this.initNewSche();
-    // TODO: バリデーション st<enか
   }
 
   rmSchedule() {
