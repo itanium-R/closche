@@ -201,6 +201,11 @@ class SettingModal extends React.Component {
     event.preventDefault();
   }
 
+  initializeApp() {
+    localStorage.clear();
+    window.location.reload();
+  }
+
   render() {
     return (
       <div>
@@ -296,7 +301,12 @@ class SettingModal extends React.Component {
             </label>
             <p><button onClick={this.addSchedule}>登録</button></p>
           </form>
-          <p><button onClick={this.closeModal}>close</button></p>
+
+          <hr />
+          <p>
+            <button onClick={this.initializeApp}>initialize</button>
+            <button onClick={this.closeModal}>close</button>
+          </p>
         </Modal>
       </div>
     );
