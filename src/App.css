@@ -160,6 +160,24 @@ input[type="text"] {
   width: 6em;
 }
 
+input[type="checkbox"]{
+  width: 2.5em;
+  height: 1.4em;
+  color: #000; 
+}
+input[type=checkbox]::after{
+  color: #000; 
+  content: "OFF"; 
+}
+input[type=checkbox]:checked{
+  background-color: #999;
+}
+input[type=checkbox]:checked::after{
+  color: #FFF;
+  margin-left: 0.25em; 
+  content: "ON"; 
+}
+
 select {
   width: 13em;
 }

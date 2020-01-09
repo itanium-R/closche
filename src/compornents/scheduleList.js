@@ -153,6 +153,7 @@ class ScheduleList extends React.Component {
               </li>
             ))}
           </ul>
+          {approaching.length === 0 ? <p>次の予定はありません</p> : <span />}
         </div>
         <div className="approaching">
           <ul className="nopoint">
