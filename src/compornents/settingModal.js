@@ -217,8 +217,9 @@ class SettingModal extends React.Component {
           style={customStyles}
           contentLabel="Setting Modal"
         >
+          <div className="settingModal">
           <form>
-            <h2>Setting</h2>
+            <h2>表示設定</h2>
             <div>
               <label className="setLabel"> 全予定表示
                 <input name="showsAll" type="checkbox"
@@ -262,6 +263,7 @@ class SettingModal extends React.Component {
                 ))}
               </select>
             </label>
+            <br />
 
             <label className="setLabel"> 開始時刻
                 <input name="editedScheSt" type="time"
@@ -307,6 +309,7 @@ class SettingModal extends React.Component {
             <button onClick={this.initializeApp}>initialize</button>
             <button onClick={this.closeModal}>close</button>
           </p>
+          </div>
         </Modal>
       </div>
     );

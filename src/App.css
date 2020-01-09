@@ -53,6 +53,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+h2 {
+  margin: 0.1em 0.1em 0.5em 0.1em;
+}
+
 .sched {
   display: inline-block;
   overflow: hidden;
@@ -132,14 +136,49 @@ code {
 }
 
 .setLabel {
-  display: block;
-  width: 10em;
+  display: inline-block;
+  width: 6em;
+}
+
+input, button, textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+input,select {
+  border: 0.1em solid #CCC;
+  border-radius: 0.5em;
+  margin: 0.25em;
 }
 
 input[type="number"] {
   width: 2em;
 }
 
-.scheLi{
+input[type="text"] {
+  width: 6em;
+}
+
+select {
+  width: 13em;
+}
+
+button {
+  border: 1px solid #999;
+  background-color: #999;
+  color: #FFF;
+  font-weight: bold;
+  border-radius: 5px;
+  margin: 2px 5px;
+}
+
+.scheLi {
   margin: 0.5em 0;
+}
+
+.settingModal {
+  margin: 0;
+  max-height: 94vh;
+  overflow: auto;
 }
