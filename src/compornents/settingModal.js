@@ -301,7 +301,7 @@ class SettingModal extends React.Component {
                 value={this.state.newScheT}
                 onChange={this.handleInputChange} />
             </label>
-            <p><button onClick={this.addSchedule}>登録</button></p>
+            <p><button onClick={this.addSchedule}>追加</button></p>
           </form>
 
           <hr />
