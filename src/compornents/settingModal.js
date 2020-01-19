@@ -35,7 +35,8 @@ class SettingModal extends React.Component {
       editedScheSt: "00:00",
       editedScheEn: "00:00",
       editedScheT: "",
-      editId: editId
+      editId: editId,
+      preset: ""
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -46,6 +47,8 @@ class SettingModal extends React.Component {
     this.addSchedule = this.addSchedule.bind(this);
     this.rmSchedule = this.rmSchedule.bind(this);
     this.editSchedule = this.editSchedule.bind(this);
+
+    this.loadPreset = this.loadPreset.bind(this);
   }
 
   zeroPad(num, len) {
@@ -206,6 +209,21 @@ class SettingModal extends React.Component {
     window.location.reload();
   }
 
+  loadPreset() {
+    let apiUrl = "https://script.google.com/macros/s/AKfycbxOBOfpSsnApd0GMwPm2xCLlBmnksqqUkLMICRFldFDBLt7Uv8/exec";
+    let preset = this.state.preset;
+    fetch(apiUrl + "?mode=json_preset&preset=" + preset).then((response) => {
+      return response.json();
+    }).then((presetJson) => {
+      console.log(presetJson);
+      this.state.schedulesHandler(presetJson);
+      this.initNewSche();
+      alert("読込完了！");
+    }).catch((error) => {
+      alert("読込失敗...\n\n" + error);
+    });
+  }
+
   render() {
     return (
       <div>
@@ -218,97 +236,108 @@ class SettingModal extends React.Component {
           contentLabel="Setting Modal"
         >
           <div className="settingModal">
-          <form>
-            <h2>表示設定</h2>
-            <div>
-              <label className="setLabel"> 全予定表示
-                <input name="showsAll" type="checkbox"
-                  checked={this.state.showsAll}
-                  onChange={this.handleInputChange} />
-              </label>
-            </div>
-            {!this.state.showsAll &&
+            <form>
+              <h2>表示設定</h2>
               <div>
-                <label className="setLabel"> 表示数(2~*)
-                  <input name="apprNum" type="number"
-                    value={this.state.apprNum}
+                <label className="setLabel"> 全予定表示
+                <input name="showsAll" type="checkbox"
+                    checked={this.state.showsAll}
                     onChange={this.handleInputChange} />
                 </label>
               </div>
-            }
+              {!this.state.showsAll &&
+                <div>
+                  <label className="setLabel"> 表示数(2~*)
+                  <input name="apprNum" type="number"
+                      value={this.state.apprNum}
+                      onChange={this.handleInputChange} />
+                  </label>
+                </div>
+              }
 
-            <label className="setLabel"> 文字色
+              <label className="setLabel"> 文字色
                 <input name="fontColor" type="text"
-                value={this.state.color.font}
-                onChange={this.handleInputChange} />
-            </label>
-            <label className="setLabel"> 背景色
+                  value={this.state.color.font}
+                  onChange={this.handleInputChange} />
+              </label>
+              <label className="setLabel"> 背景色
                 <input name="backColor" type="text"
-                value={this.state.color.back}
-                onChange={this.handleInputChange} />
-            </label>
-          </form>
+                  value={this.state.color.back}
+                  onChange={this.handleInputChange} />
+              </label>
+            </form>
 
-          <hr />
-          <form onSubmit={this.submitHandle}>
-            <h2>予定編集・削除</h2>
-            <label className="setLabel"> 予定選択
+            <hr />
+            <form onSubmit={this.submitHandle}>
+              <h2>予定編集・削除</h2>
+              <label className="setLabel"> 予定選択
               <select value={this.state.editId} name="rmOpt"
-                onChange={this.handleInputChange} >
-                {this.state.schedules.list.map(a => (
-                  <option
-                    label={a.title + "(" + ("00" + a.st.h).slice(-2) +
-                      ":" + ("00" + a.st.m).slice(-2) + "~)"}
-                    value={a.id} key={a.id} />
-                ))}
-              </select>
-            </label>
-            <br />
+                  onChange={this.handleInputChange} >
+                  {this.state.schedules.list.map(a => (
+                    <option
+                      label={a.title + "(" + ("00" + a.st.h).slice(-2) +
+                        ":" + ("00" + a.st.m).slice(-2) + "~)"}
+                      value={a.id} key={a.id} />
+                  ))}
+                </select>
+              </label>
+              <br />
 
-            <label className="setLabel"> 開始時刻
+              <label className="setLabel"> 開始時刻
                 <input name="editedScheSt" type="time"
-                value={this.state.editedScheSt}
-                onChange={this.handleInputChange} />
-            </label>
-            <label className="setLabel"> 終了時刻
+                  value={this.state.editedScheSt}
+                  onChange={this.handleInputChange} />
+              </label>
+              <label className="setLabel"> 終了時刻
                 <input name="editedScheEn" type="time"
-                value={this.state.editedScheEn}
-                onChange={this.handleInputChange} />
-            </label>
-            <label className="setLabel"> タイトル
+                  value={this.state.editedScheEn}
+                  onChange={this.handleInputChange} />
+              </label>
+              <label className="setLabel"> タイトル
                 <input name="editedScheT" type="text"
-                value={this.state.editedScheT}
-                onChange={this.handleInputChange} />
-            </label>
-            <p><button onClick={this.rmSchedule}>削除</button></p>
-          </form>
+                  value={this.state.editedScheT}
+                  onChange={this.handleInputChange} />
+              </label>
+              <p><button onClick={this.rmSchedule}>削除</button></p>
+            </form>
 
-          <hr />
-          <form onSubmit={this.submitHandle}>
-            <h2>予定追加</h2>
-            <label className="setLabel"> 開始時刻
+            <hr />
+            <form onSubmit={this.submitHandle}>
+              <h2>予定追加</h2>
+              <label className="setLabel"> 開始時刻
                 <input name="newScheSt" type="time"
-                value={this.state.newScheSt}
-                onChange={this.handleInputChange} />
-            </label>
-            <label className="setLabel"> 終了時刻
+                  value={this.state.newScheSt}
+                  onChange={this.handleInputChange} />
+              </label>
+              <label className="setLabel"> 終了時刻
                 <input name="newScheEn" type="time"
-                value={this.state.newScheEn}
-                onChange={this.handleInputChange} />
-            </label>
-            <label className="setLabel"> タイトル
+                  value={this.state.newScheEn}
+                  onChange={this.handleInputChange} />
+              </label>
+              <label className="setLabel"> タイトル
                 <input name="newScheT" type="text"
-                value={this.state.newScheT}
-                onChange={this.handleInputChange} />
-            </label>
-            <p><button onClick={this.addSchedule}>追加</button></p>
-          </form>
+                  value={this.state.newScheT}
+                  onChange={this.handleInputChange} />
+              </label>
+              <p><button onClick={this.addSchedule}>追加</button></p>
+            </form>
 
-          <hr />
-          <p>
-            <button onClick={this.initializeApp}>initialize</button>
-            <button onClick={this.closeModal}>close</button>
-          </p>
+            <hr />
+            <form onSubmit={this.submitHandle}>
+              <h2>Preset</h2>
+              <label className="setLabel"> Preset名
+                <input name="preset" type="text"
+                  value={this.state.preset}
+                  onChange={this.handleInputChange} />
+              </label>
+              <span><button onClick={this.loadPreset}>読込</button></span>
+            </form>
+
+            <hr />
+            <p>
+              <button onClick={this.initializeApp}>initialize</button>
+              <button onClick={this.closeModal}>close</button>
+            </p>
           </div>
         </Modal>
       </div>
