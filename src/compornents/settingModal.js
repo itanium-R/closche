@@ -2,6 +2,8 @@
 
 import React from 'react';
 import Modal from 'react-modal';
+import queryString from 'query-string';
+
 const customStyles = {
   content: {
     top: '50%',
@@ -49,6 +51,11 @@ class SettingModal extends React.Component {
     this.editSchedule = this.editSchedule.bind(this);
 
     this.loadPreset = this.loadPreset.bind(this);
+  }
+
+  componentDidMount() {
+    const qs = queryString.parse(window.location.search);
+    if (qs.preset) this.loadPreset(qs.preset);
   }
 
   zeroPad(num, len) {
@@ -209,9 +216,9 @@ class SettingModal extends React.Component {
     window.location.reload();
   }
 
-  loadPreset() {
+  loadPreset(preset) {
     let apiUrl = "https://script.google.com/macros/s/AKfycbxOBOfpSsnApd0GMwPm2xCLlBmnksqqUkLMICRFldFDBLt7Uv8/exec";
-    let preset = this.state.preset;
+    if (typeof (preset) !== "string") preset = this.state.preset;
     fetch(apiUrl + "?mode=json_preset&preset=" + preset).then((response) => {
       return response.json();
     }).then((presetJson) => {
