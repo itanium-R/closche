@@ -218,10 +218,10 @@ class SettingModal extends React.Component {
       console.log(presetJson);
       this.state.schedulesHandler(presetJson);
       this.initNewSche();
-      alert("読込完了！");
     }).catch((error) => {
       alert("読込失敗...\n\n" + error);
     });
+    this.closeModal();
   }
 
   render() {
