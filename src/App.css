@@ -105,14 +105,14 @@ h2 {
 }
 
 .suffix {
-  width: 6em;
-  margin: 0 0.5em 0 3.5em;
+  width: 6.5em;
+  margin: 0 0em 0 3.5em;
   font-family: 'Noto Sans JP', sans-serif;
 }
 
 .dMark {
   width: 0.2em;
-  margin: 0 0.3em;
+  margin: 0 0.3em 0 0;
   transform: scale3d(2, 2, 1) translateY(-4%);
 }
 
