@@ -28,7 +28,7 @@ class Clock extends React.Component {
     return (
       <div className="closche">
         <div className="clock">
-          <span className="underlined">{this.state.date.toLocaleTimeString()}</span>
+          <span className="underlined">{this.state.date.toLocaleTimeString("en-GB")}</span>
         </div>
         <div className="schedule">
           <ScheduleList now={this.state.date} showsAll="true" />
