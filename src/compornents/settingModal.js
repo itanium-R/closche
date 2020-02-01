@@ -11,7 +11,8 @@ const customStyles = {
     right: 'auto',
     bottom: 'auto',
     marginRight: '-50%',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
+    padding: '0 0 0 0.5%'
   }
 };
 
@@ -332,10 +333,11 @@ class SettingModal extends React.Component {
             <hr />
             <form onSubmit={this.submitHandle}>
               <h2>Preset</h2>
-              <label className="setLabel"> Preset名
+              <label className="setLabel">
                 <input name="preset" type="text"
                   value={this.state.preset}
-                  onChange={this.handleInputChange} />
+                  onChange={this.handleInputChange}
+                  placeholder="preset name" />
               </label>
               <span><button onClick={this.loadPreset}>読込</button></span>
             </form>
