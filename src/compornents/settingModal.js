@@ -108,6 +108,7 @@ class SettingModal extends React.Component {
     let value = event.target.value;
     let color = this.state.color;
     let name = event.target.name;
+
     switch (name) {
       case ("showsAll"):
         this.setState({ showsAll: checked });
@@ -156,15 +157,27 @@ class SettingModal extends React.Component {
     let schedules = this.state.schedules;
     let st = this.parseTimeObj(this.state.newScheSt);
     let en = this.parseTimeObj(this.state.newScheEn);
+    let title = this.state.newScheT;
+
+    // 入力チェック
+    if (isNaN(st.h) || isNaN(en.h)) {
+      alert("時刻入力が不正です");
+      return -1;
+    }
+    if (title === "") {
+      alert("タイトルを入力してください");
+      return -1;
+    }
     if ((st.h * 60 + st.m) > (en.h * 60 + en.m)) {
       alert("終了時刻を開始時刻より前に設定してください");
       return -1;
     }
+
     let newSche = {
       id: schedules.nextId,
       st: st,
       en: en,
-      title: this.state.newScheT
+      title: title
     }
     schedules.list.push(newSche);
     schedules.nextId += 1;
